@@ -1,0 +1,92 @@
+<html>
+    <body>
+        Comment code:<input type="text" id="name" placeholder="enter your name"><br><br>
+
+        <textarea id="comment" placeholder="enter your comments "></textarea>
+        <button onclick="addComment()">Comment</button>
+        <!-- <button onclick="alC()">View All Comments</button> -->
+    <ul id="orderlist" style="list-style-type: none" ></ul>
+        <script>
+             var x="";
+             var p="";
+          //  loadComments();
+            
+            function addComment(){
+                event.preventDefault();
+                var name=document.getElementById("name").value;
+                var comment=document.getElementById("comment").value;
+                var userComment={
+                    name:name,
+                    comment:comment
+                }
+                if(localStorage.getItem("comments") == null){
+                    var comments_temp = [];
+                    comments_temp.push(userComment);
+                    console.log(comments_temp);
+                    var comments_final = JSON.stringify(comments_temp);
+                    localStorage.setItem("comments",comments_final);
+                    loadComments();
+                    //document.getElementById("orderlist").innerHTML="<li>"+comments_temp[0].name+"<br>"+comments_temp[0].comment+"</li>";
+                    clearInput();
+                }
+                else{
+
+                     var allComments = JSON.parse(localStorage.getItem("comments"));
+                     allComments.push(userComment);
+                     console.log(allComments);
+                     var allComments_final=JSON.stringify(allComments);
+                     console.log(typeof allComments_final);
+                     localStorage.setItem("comments",allComments_final); 
+                     document.getElementById("orderlist").innerHTML="";
+                     console.log(document.getElementById("orderlist").innerHTML);
+                     clearInput();
+                     loadComments();
+
+                    //  for(var i=0;i < allComments.length;i++) {
+                    //       p += "<li>"+allComments[i].name+"<br>"+allComments[i].comment+"</li>"+"<br>";
+                          
+                    //      }
+                    //      document.getElementById("orderlist").innerHTML=p;
+                     
+                         
+                     
+                }
+            }
+
+            function deleteChild() { 
+        var e = document.querySelector("ul"); 
+        
+        //e.firstElementChild can be used. 
+        var child = e.lastElementChild;  
+        while (child) { 
+            e.removeChild(child); 
+            child = e.lastElementChild; 
+        } 
+    } 
+            
+            function loadComments(){
+              //  document.getElementById("orderlist").innerHTML="";
+              deleteChild();
+
+                 var comments = JSON.parse(localStorage.getItem("comments"));
+                
+                 console.log("hey",x);
+                 
+                 for(var i=0;i<comments.length;i++){
+                    
+                     x += "<li>"+ comments[i].name+"<br>"+comments[i].comment+"</li>"+"<br>";
+                     console.log(typeof x);
+                    } 
+
+             document.getElementById("orderlist").innerHTML=x;
+            }
+            function changeValue(id,value){
+               document.getElementById(id).value=value;
+            }
+            function clearInput(){
+                changeValue("name","");
+                changeValue("comment","");   
+            }
+        </script>
+    </body>
+</html>
